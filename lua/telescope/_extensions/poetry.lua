@@ -58,6 +58,9 @@ local switch_venv = function(prompt_bufnr)
     actions.close(prompt_bufnr)
 
     if venv_selected ~= nil then
+        local path = vim.env.PATH
+        vim.env.PATH = venv_selected .. "/bin:" .. path
+        vim.env.VIRTUAL_ENV = venv_selected
         vim.print("Venv selected: " .. venv_selected)
     end
 end
@@ -78,6 +81,7 @@ local list_venv = function(opts)
                 action_set.select:replace(switch_venv)
 
                 map("i", "<c-d>", delete_venv)
+                map("n", "<c-d>", delete_venv)
 
                 return true
             end,
