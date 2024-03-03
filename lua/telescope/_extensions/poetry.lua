@@ -5,6 +5,7 @@ local conf = require("telescope.config").values
 local actions = require("telescope.actions")
 local action_set = require("telescope.actions.set")
 local action_state = require("telescope.actions.state")
+local venv = require("venv-selector.venv")
 
 local run_command = function(command)
     local output = utils.get_os_command_output(command)
@@ -58,10 +59,8 @@ local switch_venv = function(prompt_bufnr)
     actions.close(prompt_bufnr)
 
     if venv_selected ~= nil then
-        local path = vim.env.PATH
-        vim.env.PATH = venv_selected .. "/bin:" .. path
+        venv.set_venv_and_system_paths({ value = venv_selected })
         vim.env.VIRTUAL_ENV = venv_selected
-        vim.print("Venv selected: " .. venv_selected)
     end
 end
 
